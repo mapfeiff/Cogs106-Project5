@@ -170,8 +170,13 @@ class SignalDetection:
     #define function for roc curve
     @staticmethod
     def rocCurve(falseAlarmRate, a):
-        if(falseAlarmRate < 0):
-            raise ValueError("False alarm rate must be a non-negative value")
+        try:
+            for rate in falseAlarmRate:
+                if(rate < 0):
+                    raise ValueError("False alarm rate must be a non-negative value")
+        except:
+            if(falseAlarmRate < 0):
+                    raise ValueError("False alarm rate must be a non-negative value")
         #compute the predicted hit rate based on false alarm rate
         hitRate = scipy.stats.norm.cdf(a + scipy.stats.norm.ppf(falseAlarmRate))
         return(hitRate)
@@ -182,7 +187,7 @@ class SignalDetection:
         #calculate the log-liklihood for each predicted hit rate to the observed false alarm rate
         loss = 0
         for sdt in sdtList:
-            loss += sdt.nLogLikelihood(SignalDetection.rocCurve(sdt.false_alarm_rate, a), sdt.false_alarm_rate)
+            loss += sdt.nLogLikelihood(SignalDetection.rocCurve(sdt.falseAlarm_rate(), a), sdt.falseAlarm_rate())
         return(loss)
     
     #fit the roc plot to a list of sdt objects
