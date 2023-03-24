@@ -69,7 +69,7 @@ def fit_roc_bayesian(sdtList):
     plt.show()
 
 # Define the number of SDT trials and generate a simulated dataset
-sdtList = SignalDetection.simulate(dprime       = 1,
+sdtList = SignalDetection.simulate(dPrime       = 1,
                                    criteriaList = [-1, 0, 1],
                                    signalCount  = 40,
                                    noiseCount   = 40)

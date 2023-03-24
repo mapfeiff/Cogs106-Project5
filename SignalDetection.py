@@ -162,8 +162,18 @@ class SignalDetection:
 
     #return the log likliehood of the datapoint based on a theoretical hit and false alarm rate
     def nLogLikelihood(self, hit_rate, falseAlarm_rate):
-        if(hit_rate < 0 or falseAlarm_rate < 0):
-            raise ValueError("Hit and flase alarm rate must be non-negative")
+        if(hit_rate < 0 or hit_rate > 1 or falseAlarm_rate < 0 or falseAlarm_rate > 1):
+            raise ValueError("Hit and flase alarm rate must be between 0 and 1")
+        #Temporary fix, should change later!
+        if(hit_rate == 0):
+            hit_rate = 0.00000001
+        elif(hit_rate == 1):
+            hit_rate = 0.99999999
+        if(falseAlarm_rate == 0):
+            hit_rate = 0.00000001
+        elif(falseAlarm_rate == 1):
+            hit_rate = 0.99999999
+        
         likelihood = (-(self.hits) * (math.log(hit_rate))) - (self.misses * (math.log(1 - hit_rate))) - (self.falseAlarms * (math.log(falseAlarm_rate))) - (self.correctRejections * (math.log(1 - falseAlarm_rate)))
         return(likelihood)
 
